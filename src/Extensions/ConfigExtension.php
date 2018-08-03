@@ -50,6 +50,7 @@ class ConfigExtension extends DataExtension {
         'MicroDataPhone' => 'Varchar(255)',
         'MicroDataFax' => 'Varchar(255)',
         'MicroDataEmail' => 'Varchar(255)',
+		'MicroDataABN' => 'Varchar(255)',
 
         'MicroDataPaymentAccepted' => 'Varchar(255)',
 
@@ -155,6 +156,7 @@ class ConfigExtension extends DataExtension {
                     TextField::create('MicroDataPhone', 'Phone'),
                     TextField::create('MicroDataFax', 'Fax'),
                     $microEmailField = TextField::create('MicroDataEmail', 'Email'),
+					$microABNField = TextField::create('MicroDataABN', 'ABN'),
 
                     FieldGroup::create(
                         CheckboxField::create("MicroDataEnableCoordinates", "")
@@ -202,6 +204,9 @@ class ConfigExtension extends DataExtension {
             );
 
             $microEmailField
+                ->displayIf('MicroDataType')->isEqualTo('Organization')
+                ->orIf('MicroDataType')->isEqualTo('LocalBusiness');
+			$microABNField
                 ->displayIf('MicroDataType')->isEqualTo('Organization')
                 ->orIf('MicroDataType')->isEqualTo('LocalBusiness');
             $openingHoursField->displayIf('MicroDataType')->isEqualTo('LocalBusiness');
@@ -321,6 +326,7 @@ class ConfigExtension extends DataExtension {
         } else if ($this->owner->MicroDataType == "Event") {
 
             $this->owner->MicroDataEmail = "";
+			$this->owner->MicroDataABN = "";
             $this->owner->MicroDataPaymentAccepted = "";
 
             $items = $this->owner->OpeningHours();
@@ -536,6 +542,9 @@ class ConfigExtension extends DataExtension {
                     if ($location->MicroDataEmail) {
                         $organisation["email"] = $location->MicroDataEmail;
                     }
+					if ($location->MicroDataABN) {
+                        $organisation["abn"] = $location->MicroDataABN;
+                    }
                     // map link
                     if ($location->getSocialMetaSchemaType(true) == "LocalBusiness" && $location->getSocialMetaMapLink()) {
                         $organisation["hasMap"] = $location->getSocialMetaMapLink();
@@ -625,6 +634,9 @@ class ConfigExtension extends DataExtension {
             if ($this->owner->MicroDataEmail) {
                 $location["email"] = $this->owner->MicroDataEmail;
             }
+			if ($this->owner->MicroDataABN) {
+                $location["abn"] = $this->owner->MicroDataABN;
+            }
             // coordinates
             if (isset($coordinates)) {
                 $location["geo"] = $coordinates;
@@ -649,6 +661,9 @@ class ConfigExtension extends DataExtension {
             }
             if ($this->owner->MicroDataEmail) {
                 $data["email"] = $this->owner->MicroDataEmail;
+            }
+			if ($this->owner->MicroDataABN) {
+                $data["abn"] = $this->owner->MicroDataABN;
             }
             // coordinates
             if (isset($coordinates)) {

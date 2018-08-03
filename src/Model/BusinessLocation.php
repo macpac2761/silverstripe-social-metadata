@@ -44,6 +44,7 @@ class BusinessLocation extends DataObject {
         'MicroDataPhone' => 'Varchar(255)',
         'MicroDataFax' => 'Varchar(255)',
         'MicroDataEmail' => 'Varchar(255)',
+		'MicroDataABN' => 'Varchar(255)',
 
         'MicroDataPaymentAccepted' => 'Varchar(255)',
 
@@ -138,6 +139,7 @@ class BusinessLocation extends DataObject {
                     TextField::create('MicroDataPhone', 'Phone'),
                     TextField::create('MicroDataFax', 'Fax'),
                     TextField::create('MicroDataEmail', 'Email'),
+					TextField::create('MicroDataABN', 'ABN'),
 
                     FieldGroup::create(
                         CheckboxField::create('MicroDataEnableCoordinates', '')
@@ -238,6 +240,7 @@ class BusinessLocation extends DataObject {
             $this->MicroDataPhone = "";
             $this->MicroDataFax = "";
             $this->MicroDataEmail = "";
+			$this->MicroDataABN = "";
 
             $this->MicroDataPaymentAccepted = "";
 
